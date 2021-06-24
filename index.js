@@ -1,5 +1,8 @@
 const taskContainer = document.querySelector(".task__container");
 
+
+const globalStore = [];
+
 const generateNewCard = (taskData) => `
 <div class="col-md-6 col-lg-4" id=${taskData.id}>
 <div class="card">
@@ -20,6 +23,26 @@ const generateNewCard = (taskData) => `
 </div>
 `;
 
+const loadInitialCardData = () => {
+  //local storage to get tasky card data
+
+  const getCardData = localStorage.getItem("tasky");
+
+  //convert from string to normal object
+
+  const {cards} = JSON.parse(getCardData);  /* Destructuring */
+
+  //loop over those array of task object to create HTML card, inject it to DOM
+
+  cards.map((cardObject) => {
+    taskContainer.insertAdjacentHTML("beforeend", generateNewCard(cardObject));
+
+    globalStore.push(cardObject);
+  });
+
+  //update our globalStore
+};
+
 const saveChanges = () =>{
     const taskData = {
         id: `${Date.now()}`, // unique number for id. To include a JS expression inside we use ${}.
@@ -30,4 +53,8 @@ const saveChanges = () =>{
     };
 
   taskContainer.insertAdjacentHTML("beforeend", generateNewCard(taskData));
+
+  globalStore.push(taskData);
+
+  localStorage.setItem("tasky", JSON.stringify({cards:globalStore}));
 };
