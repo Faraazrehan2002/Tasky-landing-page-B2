@@ -37,10 +37,11 @@ const loadInitialCardData = () => {
   cards.map((cardObject) => {
     taskContainer.insertAdjacentHTML("beforeend", generateNewCard(cardObject));
 
+    //update our globalStore
+    
     globalStore.push(cardObject);
   });
 
-  //update our globalStore
 };
 
 const saveChanges = () =>{
